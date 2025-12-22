@@ -1,15 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router";
+import Logo from "../../components/logo/Logo";
 
 const Navbar = () => {
 
 
   const links = <>
-    <li><NavLink>Services</NavLink></li>
-    <li><NavLink to='/coverage'>Coverage</NavLink></li>
-    {/* <li><NavLink>About Us</NavLink></li>
-    <li><NavLink>Pricing</NavLink></li> */}
-    <li><NavLink to='/send_parcel'>Send Parcel</NavLink></li>
+    <li><NavLink to='/'>Home</NavLink></li>
+    <li><NavLink to='/all_issue'>All Issue</NavLink></li>
+    <li><NavLink to='/issue_report'>Report Issue</NavLink></li>
 
   </> 
   return (
@@ -40,7 +39,7 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <span className="btn btn-ghost text-xl">cityResolve</span>
+        <span className="btn btn-ghost text-xl"><Logo></Logo></span>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -53,6 +52,7 @@ const Navbar = () => {
           <button onClick={handleLogOut} className="btn bg-white rounded-lg">Log Out</button>:
           <NavLink to='/login' className="btn bg-white rounded-lg">Log In</NavLink>
         } */}
+        <NavLink to='/login' className="btn bg-white rounded-lg">Log In</NavLink>
         <NavLink to='/BeRider' className="btn btn-primary text-black font-bold rounded-lg">Be a rider</NavLink>
       </div>
     </div>

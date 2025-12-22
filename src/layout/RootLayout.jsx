@@ -6,7 +6,7 @@ import Footer from '../pages/shared/Footer';
 const RootLayout = () => {
     return (
     <div className="bg-[#F0F0F0] py-5">
-      <div className="max-w-[1200px] mx-auto px-2 md:px-0">
+      <div className="max-w-300 mx-auto px-2 md:px-0">
         <Navbar></Navbar>
         <main className="grow w-full">
           <Outlet></Outlet>

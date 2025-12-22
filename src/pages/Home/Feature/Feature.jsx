@@ -16,8 +16,8 @@ const Feature = () => {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {/* Feature 1 */}
-        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm">
+        {/*1*/}
+        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm hover:bg-primary">
           <FaRegEdit className="text-4xl text-secondary" />
           <h3 className="text-xl font-semibold text-secondary">
             Easy Issue Reporting
@@ -29,8 +29,8 @@ const Feature = () => {
           </p>
         </div>
 
-        {/* Feature 2 */}
-        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm">
+        {/*2*/}
+        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm hover:bg-primary">
           <FaUsersCog className="text-4xl text-secondary" />
           <h3 className="text-xl font-semibold text-secondary">
             Role-Based Dashboards
@@ -41,8 +41,8 @@ const Feature = () => {
           </p>
         </div>
 
-        {/* Feature 3 */}
-        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm">
+        {/*3*/}
+        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm hover:bg-primary">
           <FaBell className="text-4xl text-secondary" />
           <h3 className="text-xl font-semibold text-secondary">
             Real-Time Status Tracking
@@ -54,8 +54,8 @@ const Feature = () => {
           </p>
         </div>
 
-        {/* Feature 4 */}
-        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm">
+        {/*4*/}
+        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm hover:bg-primary">
           <FaChartLine className="text-4xl text-secondary" />
           <h3 className="text-xl font-semibold text-secondary">
             Analytics & Reports
@@ -66,8 +66,8 @@ const Feature = () => {
           </p>
         </div>
 
-        {/* Feature 5 */}
-        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm">
+        {/*5*/}
+        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm hover:bg-primary">
           <FaUserLock className="text-4xl text-secondary" />
           <h3 className="text-xl font-semibold text-secondary">
             Secure Access & Controls
@@ -79,8 +79,8 @@ const Feature = () => {
           </p>
         </div>
 
-        {/* Feature 6 */}
-        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm">
+        {/*6*/}
+        <div className="bg-white p-6 rounded-2xl space-y-3 shadow-sm hover:bg-primary">
           <FaCrown className="text-4xl text-secondary" />
           <h3 className="text-xl font-semibold text-secondary">
             Premium Priority Support
