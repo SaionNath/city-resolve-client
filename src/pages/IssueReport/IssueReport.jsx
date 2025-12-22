@@ -71,7 +71,7 @@ const IssueReport = () => {
       } catch (error) {
         Swal.fire({
           icon: "error",
-          title: "Image Upload Failed",
+          title: `Image Upload Failed ${error}`,
           text: "Please try again later.",
         });
         return;
@@ -101,7 +101,7 @@ const IssueReport = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-      navigate("/dashboard/my-issues");
+      navigate("/dashboard/my_issues");
     }
   };
 
