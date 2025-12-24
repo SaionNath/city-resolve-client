@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/useAxios";
 import useAuth from "../../../../hooks/useAuth";
 import Loading from "../../../../components/Loading/Loading";
+import { Link } from "react-router";
 
 const MyIssue = () => {
   const axiosSecure = useAxios();
@@ -89,7 +90,9 @@ const MyIssue = () => {
                     "No Image"
                   )}
                 </td>
-                <td>{issue.trackingId}</td>
+                <td className='text-blue-500 font-bold'>
+                  <Link to={`/issue_track/${issue.trackingId}`}>{issue.trackingId}</Link>
+                </td>
               </tr>
             ))}
           </tbody>

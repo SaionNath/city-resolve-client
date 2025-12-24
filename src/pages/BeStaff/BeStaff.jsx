@@ -3,7 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 
 const Bestaff = () => {
   const {
@@ -15,6 +15,7 @@ const Bestaff = () => {
 
   const { user } = useAuth();
   const axiosSecure = useAxios();
+  const navigate = useNavigate();
   const serviceCenterData = useLoaderData();
   // console.log(serviceCenterData);
 
@@ -39,9 +40,11 @@ const Bestaff = () => {
           position: "top-end",
           icon: "success",
           title:
-            "Your application has been submitted.We will inform you in 14 days",
+            "Your application has been submitted. We will inform you in 14 days",
           showConfirmButton: false,
           timer: 3500,
+        }).then(() => {
+          navigate("/dashboard");
         });
       }
     });

@@ -10,7 +10,8 @@ import { SiGoogletasks } from "react-icons/si";
 import logoImg from '../assets/img/logo.png';
 
 const DashboardLayout = () => {
-  const {role} = useRole();
+  const { role } = useRole();  
+  console.log(role);
  
   return (
     <div className="drawer lg:drawer-open">
@@ -88,7 +89,7 @@ const DashboardLayout = () => {
               <NavLink
               to = '/dashboard/my_issues'
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="MyParcels">
+                data-tip="My Issues">
                 <TbTruckDelivery className="my-1.5 inline-block size-4" />
                 <span className="is-drawer-close:hidden">My Submitted Issue</span>
               </NavLink>
@@ -105,13 +106,13 @@ const DashboardLayout = () => {
             </li>
 
             {
-              role === "rider" && 
+              role === "staff" && 
                 <>
                   <li>
                     <NavLink
-                    to = '/dashboard/assigned_deliveries'
+                    to = '/dashboard/assigned_issue'
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                      data-tip="Assigned Deliveries">
+                      data-tip="Assigned Issues">
                       <FaTasks className="my-1.5 inline-block size-4" />
                       <span className="is-drawer-close:hidden">Assigned Issue</span>
                     </NavLink>
@@ -119,9 +120,9 @@ const DashboardLayout = () => {
 
                   <li>
                     <NavLink
-                    to = '/dashboard/completed_deliveries'
+                    to = '/dashboard/completed_issues'
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                      data-tip="Completed Deliveries">
+                      data-tip="Completed Issues">
                       <SiGoogletasks className="my-1.5 inline-block size-4" />
                       <span className="is-drawer-close:hidden">Completed Issues</span>
                     </NavLink>
@@ -134,21 +135,21 @@ const DashboardLayout = () => {
                 <>
                   <li>
                     <NavLink
-                    to = '/dashboard/approve_riders'
+                    to = '/dashboard/staff_request'
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                      data-tip="Approve Riders">
+                      data-tip="Staf Request">
                       <FaMotorcycle className="my-1.5 inline-block size-4" />
-                      <span className="is-drawer-close:hidden">Approve Staf</span>
+                      <span className="is-drawer-close:hidden">Staf Request</span>
                     </NavLink>
                   </li>
 
                   <li>
                     <NavLink
-                    to = '/dashboard/assign_rider'
+                    to = '/dashboard/assign_staff'
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                      data-tip="Assign Rider">
+                      data-tip="Assign Staff">
                       <RiEBikeFill className="my-1.5 inline-block size-4" />
-                      <span className="is-drawer-close:hidden">Assign Staf</span>
+                      <span className="is-drawer-close:hidden">Assign Staff</span>
                     </NavLink>
                   </li>
 

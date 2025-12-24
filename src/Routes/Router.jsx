@@ -14,6 +14,13 @@ import PaymentCancel from "../pages/Auth/DashBoard/Payment/PaymentCancel";
 import PaymentHistory from "../pages/Auth/DashBoard/PaymentHistory/PaymentHistory";
 import IssueDetails from "../pages/AllIssue/IssueDetails";
 import Bestaff from "../pages/BeStaff/BeStaff";
+import AdminRoute from "./AdminRoute";
+import ApproveStaff from "../pages/Auth/DashBoard/ApproveStaff/ApproveStaff";
+import AssignStaff from "../pages/Auth/DashBoard/AssignStaff/AssignStaff";
+import UserManagement from "../pages/Auth/DashBoard/UserManagement/UserManagement";
+import IssueTrack from "../pages/IssuerTrack/IssuerTrack";
+import RiderRoute from "./RiderRoute";
+import AssignedIssues from "../pages/Auth/DashBoard/AssignedIssues/AssignedIssues";
 
 export const router = createBrowserRouter([
   {
@@ -36,10 +43,15 @@ export const router = createBrowserRouter([
       {
         path: "be_staff",
         loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
-        element: 
-        <PrivateRoute>
-          <Bestaff></Bestaff>
-        </PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <Bestaff></Bestaff>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'issue_track/:trackingId',
+        Component: IssueTrack
       },
       {
         path: "issues/:id",
@@ -88,6 +100,36 @@ export const router = createBrowserRouter([
       {
         path: "payment_cancel",
         Component: PaymentCancel,
+      },
+      {
+        path: 'assigned_issue',
+        element: 
+        <RiderRoute>
+          <AssignedIssues></AssignedIssues>
+        </RiderRoute>
+      },
+      //admin only routes
+      {
+        path: "staff_request",
+        element: (
+            <AdminRoute>
+              <ApproveStaff></ApproveStaff>
+            </AdminRoute>
+        ),
+      },
+      {
+        path: "assign_staff",
+        element: (
+          <AdminRoute>
+            <AssignStaff></AssignStaff>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "users_management",
+        element: (
+          <UserManagement></UserManagement>
+        ),
       },
     ],
   },
