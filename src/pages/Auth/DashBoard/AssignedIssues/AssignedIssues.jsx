@@ -70,7 +70,7 @@ const AssignedIssues = () => {
                       onClick={() => handleResolve(issue._id)}
                       className="btn btn-success btn-sm"
                     >
-                      Mark Resolved
+                      Complete Issue
                     </button>
                   )}
 
@@ -78,6 +78,10 @@ const AssignedIssues = () => {
                     <span className="text-green-600 font-semibold">
                       Waiting for admin
                     </span>
+                  )}
+
+                  {issue.status === "closed" && (
+                    <span className="text-gray-500 font-medium">Closed</span>
                   )}
                 </td>
               </tr>

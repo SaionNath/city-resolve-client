@@ -66,10 +66,17 @@ const MyIssue = () => {
                   <span className="badge badge-warning">{issue.status}</span>
                 </td>
                 <td>
-                  {issue.priority === "normal" ? (
+                  {issue.priority === "normal" && issue.status !== "closed" ? (
                     <span
-                      className="badge badge-outline cursor-pointer"
+                      className="badge badge-outline cursor-pointer hover:badge-warning"
                       onClick={() => handlePayment(issue)}
+                    >
+                      {issue.priority}
+                    </span>
+                  ) : issue.priority === "normal" &&
+                    issue.status === "closed" ? (
+                    <span
+                      className="badge badge-ghost cursor-not-allowed"
                     >
                       {issue.priority}
                     </span>
@@ -90,8 +97,10 @@ const MyIssue = () => {
                     "No Image"
                   )}
                 </td>
-                <td className='text-blue-500 font-bold'>
-                  <Link to={`/issue_track/${issue.trackingId}`}>{issue.trackingId}</Link>
+                <td className="text-blue-500 font-bold">
+                  <Link to={`/issue_track/${issue.trackingId}`}>
+                    {issue.trackingId}
+                  </Link>
                 </td>
               </tr>
             ))}

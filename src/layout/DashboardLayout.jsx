@@ -1,12 +1,9 @@
 import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import Logo from "../components/logo/Logo";
-import { TbTruckDelivery } from "react-icons/tb";
 import { FaCreditCard, FaMotorcycle, FaUsers } from "react-icons/fa6";
 import useRole from "../hooks/useRole";
-import { RiEBikeFill } from "react-icons/ri";
-import { FaTasks } from "react-icons/fa";
-import { SiGoogletasks } from "react-icons/si";
+import { FaCheckCircle, FaClipboardList, FaListAlt, FaTasks, FaUserCog, FaUserPlus } from "react-icons/fa";
 import logoImg from '../assets/img/logo.png';
 
 const DashboardLayout = () => {
@@ -90,7 +87,7 @@ const DashboardLayout = () => {
               to = '/dashboard/my_issues'
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="My Issues">
-                <TbTruckDelivery className="my-1.5 inline-block size-4" />
+                <FaClipboardList className="my-1.5 inline-block size-4" />
                 <span className="is-drawer-close:hidden">My Submitted Issue</span>
               </NavLink>
             </li>
@@ -123,7 +120,7 @@ const DashboardLayout = () => {
                     to = '/dashboard/completed_issues'
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                       data-tip="Completed Issues">
-                      <SiGoogletasks className="my-1.5 inline-block size-4" />
+                      <FaCheckCircle className="my-1.5 inline-block size-4" />
                       <span className="is-drawer-close:hidden">Completed Issues</span>
                     </NavLink>
                   </li>
@@ -135,11 +132,21 @@ const DashboardLayout = () => {
                 <>
                   <li>
                     <NavLink
+                    to = '/dashboard/all_issues'
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip="All Issues">
+                      <FaListAlt className="my-1.5 inline-block size-4" />
+                      <span className="is-drawer-close:hidden">All Issues</span>
+                    </NavLink>
+                  </li>
+
+                  <li>
+                    <NavLink
                     to = '/dashboard/staff_request'
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                       data-tip="Staf Request">
-                      <FaMotorcycle className="my-1.5 inline-block size-4" />
-                      <span className="is-drawer-close:hidden">Staf Request</span>
+                      <FaUserPlus className="my-1.5 inline-block size-4" />
+                      <span className="is-drawer-close:hidden">Staff Request</span>
                     </NavLink>
                   </li>
 
@@ -148,7 +155,7 @@ const DashboardLayout = () => {
                     to = '/dashboard/assign_staff'
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                       data-tip="Assign Staff">
-                      <RiEBikeFill className="my-1.5 inline-block size-4" />
+                      <FaUserCog className="my-1.5 inline-block size-4" />
                       <span className="is-drawer-close:hidden">Assign Staff</span>
                     </NavLink>
                   </li>

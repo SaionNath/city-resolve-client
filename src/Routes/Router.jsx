@@ -21,6 +21,8 @@ import UserManagement from "../pages/Auth/DashBoard/UserManagement/UserManagemen
 import IssueTrack from "../pages/IssuerTrack/IssuerTrack";
 import RiderRoute from "./RiderRoute";
 import AssignedIssues from "../pages/Auth/DashBoard/AssignedIssues/AssignedIssues";
+import AllIssues from "../pages/Auth/DashBoard/AllIssues/AllIssues";
+import CompletedIssues from "../pages/Auth/DashBoard/CompletedIssues/CompletedIssues";
 
 export const router = createBrowserRouter([
   {
@@ -108,7 +110,22 @@ export const router = createBrowserRouter([
           <AssignedIssues></AssignedIssues>
         </RiderRoute>
       },
+      {
+        path: 'completed_issues',
+        element: 
+        <RiderRoute>
+          <CompletedIssues></CompletedIssues>
+        </RiderRoute>
+      },
       //admin only routes
+      {
+        path: "all_issues",
+        element: (
+            <AdminRoute>
+              <AllIssues></AllIssues>
+            </AdminRoute>
+        ),
+      },
       {
         path: "staff_request",
         element: (

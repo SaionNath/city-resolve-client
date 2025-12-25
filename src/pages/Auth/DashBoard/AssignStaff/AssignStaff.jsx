@@ -36,7 +36,7 @@ const AssignStaff = () => {
     axiosSecure
       .patch(`/issues/${selectedIssue._id}/assign`, {
         staffEmail: staffMember.email,
-        staffName: staffMember.displayName,
+        staffName: staffMember.staffName,
       })
       .then((res) => {
         if (res.data.success) {
@@ -83,15 +83,15 @@ const AssignStaff = () => {
                 <td>{issue.priority}</td>
                 <td>{issue.status}</td>
                 <td>
-                  {issue.assignedStaff ? (
-                    <button className="btn btn-disabled">Staff Assigned</button>
-                  ) : (
+                  {issue.status === "pending" ? (
                     <button
                       onClick={() => openAssignStaffModal(issue)}
                       className="btn btn-primary text-black"
                     >
                       Assign Staff
                     </button>
+                  ) : (
+                    <span className="badge badge-info">{issue.status}</span>
                   )}
                 </td>
               </tr>
