@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useAxiosSimple from "../../../hooks/useAxiosSimple";
 import useAxios from "../../../hooks/useAxios";
 import useAuth from "../../../hooks/useAuth";
@@ -13,16 +13,16 @@ const HomeIssues = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const loadIssues = () => {
+  const loadIssues = useCallback(() => {
     axiosSimple
       .get("/issues/home")
       .then((res) => setIssues(res.data))
       .catch((err) => console.error(err));
-  };
+  }, [axiosSimple]);
 
   useEffect(() => {
     loadIssues();
-  }, []);
+  }, [loadIssues]);
 
   const handleUpvote = async (issueId) => {
     if (!user) {
