@@ -23,6 +23,11 @@ import RiderRoute from "./RiderRoute";
 import AssignedIssues from "../pages/Auth/DashBoard/AssignedIssues/AssignedIssues";
 import AllIssues from "../pages/Auth/DashBoard/AllIssues/AllIssues";
 import CompletedIssues from "../pages/Auth/DashBoard/CompletedIssues/CompletedIssues";
+import AccountRestricted from "../pages/Auth/DashBoard/AccountRestricted/AccountRestricted";
+import PremiumSuccess from "../pages/Auth/DashBoard/Payment/PremiumSuccess";
+import PremiumCancel from "../pages/Auth/DashBoard/Payment/PremiumCancel";
+import Profile from "../components/Profile/Profile";
+import DashBoardHome from "../pages/Auth/DashBoard/DashBoardHome/DashBoardHome";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +46,10 @@ export const router = createBrowserRouter([
         path: "issue_report",
         loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
         Component: IssueReport,
+      },
+      {
+        path: "profile",
+        Component: Profile,
       },
       {
         path: "be_staff",
@@ -88,6 +97,10 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
+        index: true,
+        Component: DashBoardHome,
+      },
+      {
         path: "my_issues",
         Component: MyIssue,
       },
@@ -102,6 +115,18 @@ export const router = createBrowserRouter([
       {
         path: "payment_cancel",
         Component: PaymentCancel,
+      },
+      {
+        path: "account_restricted",
+        Component: AccountRestricted,
+      },
+      {
+        path: "premium_success",
+        Component: PremiumSuccess
+      },
+      {
+        path: "premium_cancel",
+        Component: PremiumCancel
       },
       {
         path: 'assigned_issue',

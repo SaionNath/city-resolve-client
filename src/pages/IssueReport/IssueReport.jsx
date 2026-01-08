@@ -6,6 +6,7 @@ import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Loading from "../../components/Loading/Loading";
 
 const IssueReport = () => {
   const {
@@ -14,11 +15,13 @@ const IssueReport = () => {
     control,
     formState: { errors },
   } = useForm();
+
   const { user } = useAuth();
   const axiosSecure = useAxios();
   const navigate = useNavigate();
 
   const serviceCenterData = useLoaderData();
+
   const regions = [...new Set(serviceCenterData.map((c) => c.region))];
   const incidentRegion = useWatch({ control, name: "incidentRegion" });
 
@@ -28,7 +31,7 @@ const IssueReport = () => {
       .map((d) => d.district);
   };
 
-  const { data: dbUser = {} } = useQuery({
+  const { data: dbUser = {}, isLoading } = useQuery({
     queryKey: ["user", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -37,7 +40,19 @@ const IssueReport = () => {
     },
   });
 
-  const isPremium = dbUser?.premium;
+  if (!user || isLoading) return <Loading />;
+
+  if (dbUser?.role === "citizen" && dbUser?.isBlocked) {
+    navigate("/dashboard/account_restricted", {
+      state: {
+        reason: dbUser.blockReason,
+      },
+      replace: true,
+    });
+    return null;
+  }
+
+  const isPremium = dbUser?.isPremium;
   const issueCount = dbUser?.issueCount || 0;
   const canReport = isPremium || issueCount < 3;
 
@@ -46,34 +61,28 @@ const IssueReport = () => {
       Swal.fire({
         icon: "warning",
         title: "Limit Reached",
-        text: "Free users can report up to 3 issues. Please subscribe to continue.",
-        confirmButtonText: "Go to Subscription",
-      }).then(() => navigate("/dashboard/profile"));
+        text: "Free users can report only 3 issues. Upgrade to Premium.",
+        confirmButtonText: "Upgrade Now",
+      }).then(() => navigate("/dashboard/subscribe"));
       return;
     }
 
     let imageUrl = "";
 
-    if (data.issueImage && data.issueImage[0]) {
+    if (data.issueImage?.[0]) {
       const formData = new FormData();
       formData.append("image", data.issueImage[0]);
 
-      const imageApiUrl = `https://api.imgbb.com/1/upload?key=${
-        import.meta.env.VITE_image_host_Key
-      }`;
-
       try {
-        const imgRes = await axios.post(imageApiUrl, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-
+        const imgRes = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${
+            import.meta.env.VITE_image_host_Key
+          }`,
+          formData
+        );
         imageUrl = imgRes.data.data.url;
-      } catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: `Image Upload Failed ${error}`,
-          text: "Please try again later.",
-        });
+      } catch {
+        Swal.fire("Error", "Image upload failed", "error");
         return;
       }
     }
@@ -84,24 +93,31 @@ const IssueReport = () => {
       incidentRegion: data.incidentRegion,
       incidentDistrict: data.incidentDistrict,
       image: imageUrl,
-      reporterEmail: user.email,
-      reporterName: user.displayName,
-      status: "pending",
-      priority: "normal",
-      createdAt: new Date(),
     };
 
-    const res = await axiosSecure.post("/issues", issueData);
+    try {
+      const res = await axiosSecure.post("/issues", issueData);
 
-    if (res.data.insertedId) {
-      Swal.fire({
-        icon: "success",
-        title: "Issue Submitted",
-        text: "Your issue has been reported successfully.",
-        timer: 2000,
-        showConfirmButton: false,
-      });
-      navigate("/dashboard/my_issues");
+      if (res.data.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: "Issue Submitted",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        navigate("/dashboard/my_issues");
+      }
+    } catch (error) {
+      if (error.response?.status === 403) {
+        navigate("/dashboard/account-restricted", {
+          state: {
+            reason: error.response.data.reason,
+          },
+        });
+        return;
+      }
+
+      Swal.fire("Error", "Something went wrong", "error");
     }
   };
 
@@ -113,9 +129,9 @@ const IssueReport = () => {
       </p>
 
       {!canReport && (
-        <div className="bg-yellow-100 text-yellow-800 p-4 rounded-lg mt-4">
-          You have reached the free issue limit (3). Subscribe for <b>1000tk</b>{" "}
-          to report unlimited issues.
+        <div className="bg-yellow-100 p-4 rounded mt-4 text-yellow-800">
+          Free users can report only 3 issues. Upgrade to Premium for unlimited
+          reports.
         </div>
       )}
 
@@ -123,74 +139,49 @@ const IssueReport = () => {
         onSubmit={handleSubmit(handleReportIssue)}
         className="mt-6 space-y-4"
       >
-        {/* Issue Title */}
-        <div>
-          <label className="label">Issue Title</label>
-          <input
-            {...register("title", { required: true })}
-            className="input w-full"
-            placeholder="Short issue title"
-          />
-          {errors.title && <p className="text-red-500">Title is required</p>}
-        </div>
+        <input
+          {...register("title", { required: true })}
+          className="input w-full"
+          placeholder="Issue title"
+        />
+        {errors.title && <p className="text-red-500">Title required</p>}
 
-        {/* Issue Image */}
-        <div>
-          <label className="label">Issue Image (optional)</label>
-          <input
-            type="file"
-            accept="image/*"
-            {...register("issueImage")}
-            className="file-input file-input-bordered w-full"
-          />
-        </div>
+        <input
+          type="file"
+          accept="image/*"
+          {...register("issueImage")}
+          className="file-input w-full"
+        />
 
-        {/* Region */}
-        <div>
-          <label className="label">Incident Region</label>
-          <select
-            {...register("incidentRegion", { required: true })}
-            className="select w-full"
-          >
-            <option value="">Select Region</option>
-            {regions.map((r, i) => (
-              <option key={i} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          {...register("incidentRegion", { required: true })}
+          className="select w-full"
+        >
+          <option value="">Select Region</option>
+          {regions.map((r) => (
+            <option key={r}>{r}</option>
+          ))}
+        </select>
 
-        {/* District */}
-        <div>
-          <label className="label">Incident District</label>
-          <select
-            {...register("incidentDistrict", { required: true })}
-            className="select w-full"
-          >
-            <option value="">Select District</option>
-            {districtsByRegion(incidentRegion).map((d, i) => (
-              <option key={i} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          {...register("incidentDistrict", { required: true })}
+          className="select w-full"
+        >
+          <option value="">Select District</option>
+          {districtsByRegion(incidentRegion).map((d) => (
+            <option key={d}>{d}</option>
+          ))}
+        </select>
 
-        {/* Description */}
-        <div>
-          <label className="label">Issue Description</label>
-          <textarea
-            {...register("description", { required: true })}
-            className="textarea w-full"
-            rows="4"
-            placeholder="Describe the issue in detail"
-          />
-        </div>
+        <textarea
+          {...register("description", { required: true })}
+          className="textarea w-full"
+          placeholder="Describe the issue"
+        />
 
         <button
           disabled={!canReport}
-          className="btn w-full bg-primary text-black font-semibold disabled:opacity-50"
+          className="btn w-full bg-primary text-black"
         >
           Submit Issue
         </button>

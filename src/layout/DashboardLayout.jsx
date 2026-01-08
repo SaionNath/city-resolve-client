@@ -8,7 +8,7 @@ import logoImg from '../assets/img/logo.png';
 
 const DashboardLayout = () => {
   const { role } = useRole();  
-  console.log(role);
+  // console.log(role);
  
   return (
     <div className="drawer lg:drawer-open">
@@ -172,13 +172,13 @@ const DashboardLayout = () => {
                 </>
             }
 
-            {/* List item */}
+            {/* List item
             <li>
               <button
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Settings"
               >
-                {/* Settings icon */}
+                Settings icon
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -196,7 +196,7 @@ const DashboardLayout = () => {
                 </svg>
                 <span className="is-drawer-close:hidden">Settings</span>
               </button>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

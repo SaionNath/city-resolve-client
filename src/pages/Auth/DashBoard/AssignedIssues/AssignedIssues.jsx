@@ -38,7 +38,7 @@ const AssignedIssues = () => {
   return (
     <div>
       <h2 className="text-2xl text-center font-bold my-4">
-        Assigned Issues: <span className="text-blue-500">{issues.length}</span>
+        Assigned Issues: <span className="text-red-500">{issues.length}</span>
       </h2>
 
       <div className="overflow-x-auto">

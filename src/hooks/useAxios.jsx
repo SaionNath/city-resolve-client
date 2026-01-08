@@ -23,8 +23,8 @@ const useAxios = () => {
         }, (error) => {
             console.log(error);
 
-            const statusCode = error.status;
-            if(statusCode === 401 || statusCode === 403){
+            const statusCode = error.response?.status;
+            if(statusCode === 401){
                 logOut()
                     .then(() => {
                         navigate('/login')

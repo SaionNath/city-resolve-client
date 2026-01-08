@@ -3,17 +3,31 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import Loading from "../../components/Loading/Loading";
 import { Link } from "react-router";
+import { FaThumbsUp } from "react-icons/fa6";
 
 const AllIssue = () => {
   const axiosSecure = useAxios();
 
-  const { data: issues = [], isLoading } = useQuery({
+  const {
+    data: issues = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["allIssues"],
     queryFn: async () => {
       const res = await axiosSecure.get("/issues");
       return res.data;
     },
   });
+
+  const handleUpvote = async (id) => {
+    try {
+      await axiosSecure.patch(`/issues/${id}/upvote`);
+      refetch();
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    }
+  };
 
   if (isLoading) {
     return <Loading></Loading>;
@@ -33,6 +47,7 @@ const AllIssue = () => {
               <th>Title</th>
               <th>District</th>
               <th>Status</th>
+              <th>Upvote</th>
               <th>Priority</th>
               <th>Image</th>
               <th>Others</th>
@@ -50,6 +65,25 @@ const AllIssue = () => {
 
                 <td>
                   <span className="badge badge-warning">{issue.status}</span>
+                </td>
+
+                <td className="flex flex-col items-center gap-1">
+                  <span className="badge badge-warning capitalize">
+                    {issue.status}
+                  </span>
+
+                  <button
+                    disabled={issue.status === "closed"}
+                    onClick={() => handleUpvote(issue._id)}
+                    className={`flex flex-col items-center text-sm ${
+                      issue.status === "closed"
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-blue-600 hover:text-blue-800"
+                    }`}
+                  >
+                    <FaThumbsUp size={16} />
+                    <span>{issue.upvotes?.length || 0}</span>
+                  </button>
                 </td>
 
                 <td>

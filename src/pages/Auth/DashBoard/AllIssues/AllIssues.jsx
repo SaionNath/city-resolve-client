@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/useAxios";
 import Swal from "sweetalert2";
+import Loading from "../../../../components/Loading/Loading";
 
 const AllIssues = () => {
   const axiosSecure = useAxios();
@@ -38,7 +39,7 @@ const AllIssues = () => {
   };
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading issues...</p>;
+    return <Loading></Loading>
   }
 
   return (

@@ -21,6 +21,14 @@ const IssueDetails = () => {
     <div className="bg-white p-6 rounded-2xl max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold mb-4">{issue.title}</h2>
 
+      {issue.image && (
+        <img
+          src={issue.image}
+          alt={issue.title}
+          className="mt-4 rounded-lg w-11/12 max-h-96 object-cover"
+        />
+      )}
+
       <div className="space-y-2">
         <p>
           <strong>Tracking ID:</strong> {issue.trackingId}
@@ -34,21 +42,13 @@ const IssueDetails = () => {
         <p>
           <strong>District:</strong> {issue.incidentDistrict}
         </p>
-        <p>
+        {/* <p>
           <strong>Reported By:</strong> {issue.reporterEmail}
-        </p>
+        </p> */}
         <p>
           <strong>Description:</strong> {issue.description}
         </p>
       </div>
-
-      {issue.image && (
-        <img
-          src={issue.image}
-          alt={issue.title}
-          className="mt-4 rounded-lg w-full max-h-96 object-cover"
-        />
-      )}
     </div>
   );
 };
