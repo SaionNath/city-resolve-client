@@ -18,37 +18,39 @@ const UserManagement = () => {
     },
   });
 
-  // Promote/Demote Admin
-  const handleRoleChange = (user, newRole) => {
-    const action = newRole === "admin" ? "promote" : "demote";
+  // promote or demote admin
+  const handleRoleChange = (user, action) => {
+    const text =
+      action === "promote"
+        ? `Promote ${user.displayName} to admin?`
+        : `Demote ${user.displayName} from admin?`;
+
     Swal.fire({
       title: "Are you sure?",
-      text: `Do you want to ${action} ${user.displayName}?`,
+      text,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: `Yes, ${action} them!`,
+      confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
-          .patch(`/users/${user._id}/role`, { role: newRole })
-          .then((res) => {
-            if (res.data.modifiedCount > 0) {
-              refetch();
-              Swal.fire(
-                "Updated!",
-                `${user.displayName} is now a ${newRole}`,
-                "success"
-              );
-            }
+          .patch(`/users/${user._id}/role`, { action })
+          .then(() => {
+            refetch();
+            Swal.fire("Success", "Role updated successfully", "success");
           })
-          .catch(() => Swal.fire("Error", "Something went wrong.", "error"));
+          .catch((err) =>
+            Swal.fire(
+              "Error",
+              err.response?.data?.message || "Something went wrong",
+              "error"
+            )
+          );
       }
     });
   };
 
-  // Block/Unblock User
+  // block or unblock user
   const handleBlockToggle = (user) => {
     const action = user.isBlocked ? "unblock" : "block";
     Swal.fire({
@@ -144,14 +146,14 @@ const UserManagement = () => {
                 <td>
                   {user.role === "admin" ? (
                     <button
-                      onClick={() => handleRoleChange(user, "user")}
+                      onClick={() => handleRoleChange(user, "demote")}
                       className="btn btn-square rounded-xl hover:bg-red-400"
                     >
                       <FiShieldOff />
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleRoleChange(user, "admin")}
+                      onClick={() => handleRoleChange(user, "promote")}
                       className="btn btn-square rounded-xl hover:bg-green-400"
                     >
                       <FaUserShield />

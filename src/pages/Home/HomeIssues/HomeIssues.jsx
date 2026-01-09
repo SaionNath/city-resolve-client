@@ -32,7 +32,7 @@ const HomeIssues = () => {
 
     try {
       await axiosSecure.patch(`/issues/${issueId}/upvote`);
-      loadIssues(); // refresh vote count
+      loadIssues(); 
       Swal.fire("Success", "Upvoted successfully", "success");
     } catch (error) {
       Swal.fire(
@@ -51,7 +51,7 @@ const HomeIssues = () => {
           <div key={issue._id} className="card bg-base-100 shadow-xl">
             <figure>
               <img
-                src={issue.image || "https://via.placeholder.com/300"}
+                src={issue.image}
                 alt={issue.title}
                 className="h-48 w-full object-cover"
               />
@@ -61,7 +61,7 @@ const HomeIssues = () => {
               <h2 className="card-title">{issue.title}</h2>
 
               <p className="text-sm flex items-center gap-1">
-                <AiFillLike /> {issue.upvoteCount || 0} votes
+                <AiFillLike /> {issue.upvoteCount} votes
               </p>
 
               <div className="card-actions justify-between mt-3">

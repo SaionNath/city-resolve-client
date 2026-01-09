@@ -2,6 +2,7 @@ import React from 'react';
 import useAuth from '../../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../../../../hooks/useAxios';
+import Loading from '../../../../components/Loading/Loading';
 
 const PaymentHistory = () => {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ const PaymentHistory = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center">Loading payment history...</p>;
+    return <Loading></Loading>
   }
 
   return (

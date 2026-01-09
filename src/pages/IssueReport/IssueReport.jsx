@@ -42,31 +42,21 @@ const IssueReport = () => {
 
   if (!user || isLoading) return <Loading />;
 
-  if (dbUser?.role === "citizen" && dbUser?.isBlocked) {
-    navigate("/dashboard/account_restricted", {
-      state: {
-        reason: dbUser.blockReason,
-      },
-      replace: true,
-    });
-    return null;
-  }
+  // if (dbUser?.role === "citizen" && dbUser?.isBlocked) {
+  //   navigate("/dashboard/account_restricted", {
+  //     state: {
+  //       reason: dbUser.blockReason,
+  //     },
+  //     replace: true,
+  //   });
+  //   return null;
+  // }
 
   const isPremium = dbUser?.isPremium;
   const issueCount = dbUser?.issueCount || 0;
   const canReport = isPremium || issueCount < 3;
 
   const handleReportIssue = async (data) => {
-    if (!canReport) {
-      Swal.fire({
-        icon: "warning",
-        title: "Limit Reached",
-        text: "Free users can report only 3 issues. Upgrade to Premium.",
-        confirmButtonText: "Upgrade Now",
-      }).then(() => navigate("/dashboard/subscribe"));
-      return;
-    }
-
     let imageUrl = "";
 
     if (data.issueImage?.[0]) {
@@ -82,7 +72,11 @@ const IssueReport = () => {
         );
         imageUrl = imgRes.data.data.url;
       } catch {
-        Swal.fire("Error", "Image upload failed", "error");
+        Swal.fire({
+          icon: "error",
+          title: "error",
+          text: "Image upload failed",
+        });
         return;
       }
     }
@@ -109,15 +103,18 @@ const IssueReport = () => {
       }
     } catch (error) {
       if (error.response?.status === 403) {
-        navigate("/dashboard/account-restricted", {
+        navigate("/dashboard/account_restricted", {
           state: {
             reason: error.response.data.reason,
           },
         });
         return;
       }
-
-      Swal.fire("Error", "Something went wrong", "error");
+      Swal.fire({
+        icon: "error",
+        title: "error",
+        text: "Something went wrong",
+      });
     }
   };
 

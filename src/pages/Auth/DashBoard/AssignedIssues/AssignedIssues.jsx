@@ -25,11 +25,12 @@ const AssignedIssues = () => {
       if (result.isConfirmed) {
         axiosSecure
           .patch(`/issues/${issueId}/status`, { status: "resolved" })
-          .then((res) => {
-            if (res.data.modifiedCount > 0) {
-              refetch();
-              Swal.fire("Resolved!", "Issue marked as resolved.", "success");
-            }
+          .then(() => {
+            refetch();
+            Swal.fire("Resolved!", "Issue marked as resolved.", "success");
+          })
+          .catch(() => {
+            Swal.fire("Error", "Failed to update issue", "error");
           });
       }
     });

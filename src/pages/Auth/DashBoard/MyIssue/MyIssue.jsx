@@ -13,7 +13,7 @@ const MyIssue = () => {
     queryKey: ["myIssues", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get("/issues/my"); // email handled in backend
+      const res = await axiosSecure.get("/issues/my"); // email handled by backend
       return res.data;
     },
   });
@@ -25,7 +25,7 @@ const MyIssue = () => {
   const handlePayment = async (issue) => {
     try {
       const paymentInfo = {
-        cost: 100, // BDT
+        cost: 100, 
         issueId: issue._id,
       };
 
