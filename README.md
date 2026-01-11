@@ -1,16 +1,107 @@
-# React + Vite
+# 🏙️ cityResolve: The Public Infrastructure Issue Reporting System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Project Overview
 
-Currently, two official plugins are available:
+The cityResolve is a web-based platform that allows citizens to report public infrastructure problems such as broken streetlights, potholes, water leakage, garbage overflow, damaged footpaths, etc. The system ensures efficient communication between citizens, government staff, and administrators to track, manage, and resolve issues transparently.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project aims to reduce delays, improve accountability, and provide a centralized digital solution for managing public infrastructure complaints.
 
-## React Compiler
+## 🎯 Key Objectives
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Provide a centralized platform for reporting public issues
 
-## Expanding the ESLint configuration
+- Improve response time from authorities
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Ensure transparency and accountability
+
+- Digitally track issue status from report to closure
+
+## 👥 User Roles
+
+- Citizen
+
+- Staff
+
+- Admin
+
+## 🔹 Features
+
+### 👤 Citizen Features
+
+- Register and log in securely
+
+- Report public infrastructure issues with details
+
+- Upload images for better clarity
+
+- Track issue status using a unique tracking ID
+
+- View issue history and updates
+
+### 🛠️ Staff Features
+
+- View issues assigned by admin
+
+- Mark issues as resolved after completing work
+
+- See real-time status updates
+
+### 🛡️ Admin Features
+
+- View all reported issues
+- Verify reported issues
+- Assign issues to staff members
+- **Assign issues only to staff members from the same district as the reported issue**
+- Close issues after staff resolution
+- Manage users (promote/demote admin, block/unblock users)
+- Track overall system statistics via dashboard
+
+## 📊 Dashboards
+
+### Admin Dashboard
+
+- Total users
+
+- Total issues
+
+- Issue status analytics
+
+### Staff Dashboard
+
+- Assigned issues
+
+- Issue progress
+
+### Citizen Dashboard
+
+- Submitted issues
+
+- Status tracking
+
+## 🔄 Issue Workflow
+
+- Citizen reports an issue
+
+- **Admin assigns the issue to an available staff member from the same district**
+
+- Staff resolves the issue
+
+- Admin reviews and closes the issue
+
+## 🔐 Security & Access Control
+
+- JWT-based authentication
+
+- Role-based authorization (Citizen / Staff / Admin)
+
+- Admin-only protected routes
+
+- Blocked users are restricted from system access
+
+## 🧰 Technology Stack
+
+- Frontend: React, Tailwind CSS, DaisyUI
+
+- Backend: Node.js, Express.js
+
+- Database: MongoDB
