@@ -9,9 +9,9 @@ const AssignStaff = () => {
   const staffModalRef = useRef();
 
   const { data: issues = [], refetch: issueRefetch } = useQuery({
-    queryKey: ["issues", "pending"],
+    queryKey: ["issues", "admin-review"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/issues?status=pending");
+      const res = await axiosSecure.get("/issues");
       return res.data;
     },
   });
@@ -54,10 +54,48 @@ const AssignStaff = () => {
       });
   };
 
+  const handleApprove = (issueId) => {
+    Swal.fire({
+      title: "Approve this issue?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Approve",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/issues/${issueId}/approve`).then(() => {
+          issueRefetch();
+          Swal.fire("Approved!", "Issue approved successfully.", "success");
+        });
+      }
+    });
+  };
+
+  const handleReject = (issue) => {
+    Swal.fire({
+      title: "Reject Issue",
+      input: "textarea",
+      inputLabel: "Rejection Reason",
+      inputPlaceholder: "Enter reason...",
+      showCancelButton: true,
+      confirmButtonText: "Reject",
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        axiosSecure
+          .patch(`/issues/${issue._id}/reject`, {
+            reason: result.value,
+          })
+          .then(() => {
+            issueRefetch();
+            Swal.fire("Rejected", "Issue has been rejected.", "success");
+          });
+      }
+    });
+  };
+
   return (
     <div>
       <h2 className="text-2xl text-center font-bold my-3">
-        Pending Issues: <span className="text-blue-500">{issues.length}</span>
+        Issue Review & Assignment Panel
       </h2>
 
       <div className="overflow-x-auto">
@@ -82,16 +120,40 @@ const AssignStaff = () => {
                 <td>{issue.incidentDistrict}</td>
                 <td>{issue.priority}</td>
                 <td>{issue.status}</td>
-                <td>
-                  {issue.status === "pending" ? (
+                <td className="flex gap-2">
+                  {issue.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() => handleApprove(issue._id)}
+                        className="btn btn-success btn-sm"
+                      >
+                        Approve
+                      </button>
+
+                      <button
+                        onClick={() => handleReject(issue)}
+                        className="btn btn-error btn-sm"
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
+
+                  {issue.status === "approved" && (
                     <button
                       onClick={() => openAssignStaffModal(issue)}
-                      className="btn btn-primary text-black"
+                      className="btn btn-primary text-black btn-sm"
                     >
                       Assign Staff
                     </button>
-                  ) : (
-                    <span className="badge badge-info">{issue.status}</span>
+                  )}
+
+                  {issue.status === "assigned" && (
+                    <span className="badge badge-info">Assigned</span>
+                  )}
+
+                  {issue.status === "rejected" && (
+                    <span className="badge badge-error">Rejected</span>
                   )}
                 </td>
               </tr>

@@ -28,11 +28,15 @@ import PremiumSuccess from "../pages/Auth/DashBoard/Payment/PremiumSuccess";
 import PremiumCancel from "../pages/Auth/DashBoard/Payment/PremiumCancel";
 import Profile from "../components/Profile/Profile";
 import DashBoardHome from "../pages/Auth/DashBoard/DashBoardHome/DashBoardHome";
+import Error from "../components/Error/Error";
+import ManageStaff from "../pages/Auth/DashBoard/ManageStaff/ManageStaff";
+import AdminPayments from "../pages/Auth/DashBoard/AdminPayments/AdminPayments";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
+    errorElement: <Error></Error>,
     children: [
       {
         index: true,
@@ -51,18 +55,18 @@ export const router = createBrowserRouter([
         path: "profile",
         Component: Profile,
       },
+      // {
+      //   path: "be_staff",
+      //   loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
+      //   element: (
+      //     <PrivateRoute>
+      //       <Bestaff></Bestaff>
+      //     </PrivateRoute>
+      //   ),
+      // },
       {
-        path: "be_staff",
-        loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
-        element: (
-          <PrivateRoute>
-            <Bestaff></Bestaff>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: 'issue_track/:trackingId',
-        Component: IssueTrack
+        path: "issue_track/:trackingId",
+        Component: IssueTrack,
       },
       {
         path: "issues/:id",
@@ -122,41 +126,44 @@ export const router = createBrowserRouter([
       },
       {
         path: "premium_success",
-        Component: PremiumSuccess
+        Component: PremiumSuccess,
       },
       {
         path: "premium_cancel",
-        Component: PremiumCancel
+        Component: PremiumCancel,
       },
       {
-        path: 'assigned_issue',
-        element: 
-        <RiderRoute>
-          <AssignedIssues></AssignedIssues>
-        </RiderRoute>
+        path: "assigned_issue",
+        element: (
+          <RiderRoute>
+            <AssignedIssues></AssignedIssues>
+          </RiderRoute>
+        ),
       },
       {
-        path: 'completed_issues',
-        element: 
-        <RiderRoute>
-          <CompletedIssues></CompletedIssues>
-        </RiderRoute>
+        path: "completed_issues",
+        element: (
+          <RiderRoute>
+            <CompletedIssues></CompletedIssues>
+          </RiderRoute>
+        ),
       },
       //admin only routes
       {
         path: "all_issues",
         element: (
-            <AdminRoute>
-              <AllIssues></AllIssues>
-            </AdminRoute>
+          <AdminRoute>
+            <AllIssues></AllIssues>
+          </AdminRoute>
         ),
       },
       {
-        path: "staff_request",
+        path: "manage_staff",
+        loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
         element: (
-            <AdminRoute>
-              <ApproveStaff></ApproveStaff>
-            </AdminRoute>
+          <AdminRoute>
+            <ManageStaff></ManageStaff>
+          </AdminRoute>
         ),
       },
       {
@@ -170,7 +177,17 @@ export const router = createBrowserRouter([
       {
         path: "users_management",
         element: (
-          <UserManagement></UserManagement>
+          <AdminRoute>
+            <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin-payments",
+        element: (
+          <AdminRoute>
+            <AdminPayments></AdminPayments>
+          </AdminRoute>
         ),
       },
     ],

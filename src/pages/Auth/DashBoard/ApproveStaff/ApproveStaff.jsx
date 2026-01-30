@@ -9,7 +9,6 @@ import Swal from "sweetalert2";
 const ApproveStaff = () => {
   const axiosSecure = useAxios();
 
-  // Fetch pending staff requests
   const { refetch, data: staffRequests = [] } = useQuery({
     queryKey: ["staffRequests", "pending"],
     queryFn: async () => {

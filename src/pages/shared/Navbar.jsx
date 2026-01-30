@@ -2,9 +2,11 @@ import React from "react";
 import { NavLink } from "react-router";
 import Logo from "../../components/logo/Logo";
 import useAuth from "../../hooks/useAuth";
+// import useRole from "../../hooks/useRole";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  // const { role } = useRole();
 
   const handleLogOut = () => {
     logOut()
@@ -94,12 +96,14 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        <NavLink
-          to="/be_staff"
-          className="btn btn-primary text-black font-bold rounded-lg"
-        >
-          Be a staff
-        </NavLink>
+        {/* {role !== "staff" && role !== "admin" && (
+          <NavLink
+            to="/be_staff"
+            className="btn btn-primary text-black font-bold rounded-lg"
+          >
+            Be a staff
+          </NavLink>
+        )} */}
       </div>
     </div>
   );

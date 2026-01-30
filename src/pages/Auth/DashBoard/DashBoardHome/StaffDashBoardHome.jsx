@@ -17,7 +17,7 @@ const StaffDashBoardHome = () => {
     },
   });
 
-  const COLORS = ["#3b82f6", "#22c55e", "#ef4444"];
+  const COLORS = ["#ef4444", "#3b82f6", "#22c55e"];
 
   if (isLoading) return <Loading></Loading>;
 
@@ -28,7 +28,7 @@ const StaffDashBoardHome = () => {
         <p className="text-gray-500">No issues assigned yet</p>
       )}
 
-      <div className="w-full h-75 sm:h-87.5 md:h-100">
+      <div className="w-full h-80 sm:h-72 md:h-96">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie

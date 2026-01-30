@@ -13,7 +13,7 @@ const MyIssue = () => {
     queryKey: ["myIssues", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get("/issues/my"); // email handled by backend
+      const res = await axiosSecure.get("/issues/my");
       return res.data;
     },
   });
@@ -25,13 +25,13 @@ const MyIssue = () => {
   const handlePayment = async (issue) => {
     try {
       const paymentInfo = {
-        cost: 100, 
+        cost: 100,
         issueId: issue._id,
       };
 
       const res = await axiosSecure.post(
         "/payment-checkout-session",
-        paymentInfo
+        paymentInfo,
       );
       window.location.assign(res.data.url);
     } catch (error) {
@@ -54,6 +54,7 @@ const MyIssue = () => {
               <th>Priority</th>
               <th>Image</th>
               <th>Tracking Id</th>
+              <th>Others</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +64,18 @@ const MyIssue = () => {
                 <td>{issue.title}</td>
                 <td>{issue.incidentDistrict}</td>
                 <td>
-                  <span className="badge badge-warning">{issue.status}</span>
+                  <span
+                    className={`badge w-24 justify-center text-center capitalize
+                    ${issue.status === "pending" && "badge-warning"}
+                    ${issue.status === "approved" && "badge-success"}
+                    ${issue.status === "rejected" && "badge-error"}
+                    ${issue.status === "closed" && "badge-neutral"}
+                    ${issue.status === "resolved" && "badge-info"}
+                    ${issue.status === "in-progress" && "badge-accent"}
+                  `}
+                  >
+                    {issue.status}
+                  </span>
                 </td>
                 <td>
                   {issue.priority === "normal" && issue.status !== "closed" ? (
@@ -75,9 +87,7 @@ const MyIssue = () => {
                     </span>
                   ) : issue.priority === "normal" &&
                     issue.status === "closed" ? (
-                    <span
-                      className="badge badge-ghost cursor-not-allowed"
-                    >
+                    <span className="badge badge-ghost cursor-not-allowed">
                       {issue.priority}
                     </span>
                   ) : (
@@ -100,6 +110,13 @@ const MyIssue = () => {
                 <td className="text-blue-500 font-bold">
                   <Link to={`/issue_track/${issue.trackingId}`}>
                     {issue.trackingId}
+                  </Link>
+                </td>
+                <td>
+                  <Link to={`/issues/${issue._id}`}>
+                    <button className="btn btn-primary text-black">
+                      Details
+                    </button>
                   </Link>
                 </td>
               </tr>

@@ -1,12 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { PieChart, Pie, Tooltip, Legend, Cell, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Tooltip,
+  Legend,
+  Cell,
+  ResponsiveContainer,
+} from "recharts";
 import useAxios from "../../../../hooks/useAxios";
 import Loading from "../../../../components/Loading/Loading";
 import useRole from "../../../../hooks/useRole";
+import { Link, useNavigate } from "react-router";
 
 const AdminDashBoardHome = () => {
   const axiosSecure = useAxios();
   const { role, roleLoading } = useRole();
+  const navigate = useNavigate();
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-dashboard"],
@@ -17,8 +26,14 @@ const AdminDashBoardHome = () => {
     },
   });
 
-  const COLORS = ["#3b82f6", "#22c55e", "#ef4444"];
-
+  const STATUS_COLORS = {
+    pending: "#ef4444",
+    approve: "#3b82f6",
+    "in-progress": "#f59e0b",
+    resolved: "#22c55e",
+    closed: "#228B22",
+  };
+  
   if (isLoading) return <Loading></Loading>;
 
   const pieData = data.issueStats.map((i) => ({
@@ -47,7 +62,14 @@ const AdminDashBoardHome = () => {
         </div>
       </div>
 
-      <div className="w-full h-75 sm:h-87.5 md:h-100">
+      <button
+        onClick={() => navigate("/dashboard/admin-payments")}
+        className="btn btn-outline"
+      >
+        View & Download Receipts
+      </button>
+
+      <div className="w-full h-80 sm:h-72 md:h-96">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -59,8 +81,8 @@ const AdminDashBoardHome = () => {
             >
               {pieData.map((entry, index) => (
                 <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                  key={index}
+                  fill={STATUS_COLORS[entry.name] || "#6b7280"}
                 />
               ))}
             </Pie>

@@ -14,6 +14,42 @@ const AssignedIssues = () => {
     },
   });
 
+  const handleAccept = (issueId) => {
+    axiosSecure.patch(`/issues/${issueId}/accept`).then(() => {
+      refetch();
+      Swal.fire({
+        title: "Accepted",
+        text: "Issue accepted successfully",
+        icon: "success",
+      });
+    });
+  };
+
+  const handleReject = (issueId) => {
+    Swal.fire({
+      title: "Reject this issue?",
+      text: "Admin will need to reassign it",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Reject",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .patch(`/issues/${issueId}/reject-staff`, {
+            reason: "Outside my area",
+          })
+          .then(() => {
+            refetch();
+            Swal.fire({
+              title: "Rejected",
+              text: "Issue rejected",
+              icon: "success",
+            });
+          });
+      }
+    });
+  };
+
   const handleResolve = (issueId) => {
     Swal.fire({
       title: "Mark issue as resolved?",
@@ -67,9 +103,27 @@ const AssignedIssues = () => {
                 </td>
                 <td>
                   {issue.status === "assigned" && (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleAccept(issue._id)}
+                        className="btn btn-success btn-sm"
+                      >
+                        Accept
+                      </button>
+
+                      <button
+                        onClick={() => handleReject(issue._id)}
+                        className="btn btn-error btn-sm"
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
+
+                  {issue.status === "in-progress" && (
                     <button
                       onClick={() => handleResolve(issue._id)}
-                      className="btn btn-success btn-sm"
+                      className="btn btn-primary text-black btn-sm"
                     >
                       Complete Issue
                     </button>
@@ -79,10 +133,6 @@ const AssignedIssues = () => {
                     <span className="text-green-600 font-semibold">
                       Waiting for admin
                     </span>
-                  )}
-
-                  {issue.status === "closed" && (
-                    <span className="text-gray-500 font-medium">Closed</span>
                   )}
                 </td>
               </tr>

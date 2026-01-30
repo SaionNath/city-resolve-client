@@ -14,10 +14,59 @@ const AllIssues = () => {
   } = useQuery({
     queryKey: ["all-issues"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/issues");
+      const res = await axiosSecure.get("/issues", {
+        params: { includePending: "true" },
+      });
       return res.data;
     },
   });
+
+  const handleApprove = (issue) => {
+    Swal.fire({
+      title: "Approve this issue?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Approve",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/issues/${issue._id}/approve`).then((res) => {
+          if (res.data.success) {
+            refetch();
+            Swal.fire("Approved!", "Issue approved successfully.", "success");
+          }
+        });
+      }
+    });
+  };
+
+  const handleReject = (issue) => {
+    Swal.fire({
+      title: "Reject this issue?",
+      input: "text",
+      inputLabel: "Rejection reason",
+      inputPlaceholder: "Enter rejection reason...",
+      showCancelButton: true,
+      confirmButtonText: "Reject",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You must provide a reason!";
+        }
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .patch(`/issues/${issue._id}/reject`, {
+            reason: result.value,
+          })
+          .then((res) => {
+            if (res.data.success) {
+              refetch();
+              Swal.fire("Rejected!", "Issue rejected successfully.", "success");
+            }
+          });
+      }
+    });
+  };
 
   const handleCloseIssue = (issue) => {
     Swal.fire({
@@ -25,7 +74,7 @@ const AllIssues = () => {
       text: "Make sure it is properly resolved.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, close it",
+      confirmButtonText: "Close",
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.patch(`/issues/${issue._id}/close`).then((res) => {
@@ -38,9 +87,7 @@ const AllIssues = () => {
     });
   };
 
-  if (isLoading) {
-    return <Loading></Loading>
-  }
+  if (isLoading) return <Loading />;
 
   return (
     <div>
@@ -70,7 +117,18 @@ const AllIssues = () => {
                 <td>{issue.incidentDistrict}</td>
                 <td>{issue.priority}</td>
                 <td>
-                  <span className="badge badge-outline">{issue.status}</span>
+                  <span
+                    className={`badge w-24 justify-center text-center capitalize
+                    ${issue.status === "pending" && "badge-warning"}
+                    ${issue.status === "approved" && "badge-success"}
+                    ${issue.status === "rejected" && "badge-error"}
+                    ${issue.status === "closed" && "badge-neutral"}
+                    ${issue.status === "resolved" && "badge-info"}
+                    ${issue.status === "in-progress" && "badge-accent"}
+                  `}
+                  >
+                    {issue.status}
+                  </span>
                 </td>
                 <td>
                   {issue.assignedStaff ? (
@@ -86,13 +144,32 @@ const AllIssues = () => {
                     <span className="text-gray-400">Not assigned</span>
                   )}
                 </td>
-                <td>
+
+                <td className="space-x-2">
+                  {issue.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() => handleApprove(issue)}
+                        className="btn btn-success btn-sm"
+                      >
+                        Approve
+                      </button>
+
+                      <button
+                        onClick={() => handleReject(issue)}
+                        className="btn btn-error btn-sm"
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
+
                   {issue.status === "resolved" && (
                     <button
                       onClick={() => handleCloseIssue(issue)}
-                      className="btn btn-success btn-sm"
+                      className="btn btn-primary btn-sm text-black"
                     >
-                      Close Issue
+                      Close
                     </button>
                   )}
 

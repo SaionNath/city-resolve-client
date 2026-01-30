@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { AiFillLike } from "react-icons/ai";
 import Swal from "sweetalert2";
+import { FaThumbsUp } from "react-icons/fa";
 
 const HomeIssues = () => {
   const [issues, setIssues] = useState([]);
@@ -32,20 +33,22 @@ const HomeIssues = () => {
 
     try {
       await axiosSecure.patch(`/issues/${issueId}/upvote`);
-      loadIssues(); 
+      loadIssues();
       Swal.fire("Success", "Upvoted successfully", "success");
     } catch (error) {
       Swal.fire(
         "Error",
         error.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
 
   return (
     <div className="px-3 lg:px-8">
-        <h2 className="text-3xl font-bold text-secondary mb-6">Available Issues</h2>
+      <h2 className="text-3xl font-bold text-secondary mb-6">
+        Available Issues
+      </h2>
       <div className="grid md:grid-cols-3 gap-6">
         {issues.map((issue) => (
           <div key={issue._id} className="card bg-base-100 shadow-xl">
@@ -65,11 +68,18 @@ const HomeIssues = () => {
               </p>
 
               <div className="card-actions justify-between mt-3">
-                <button
-                  onClick={() => handleUpvote(issue._id)}
-                  className="btn btn-outline btn-sm"
-                >
-                  Upvote
+                <button>
+                  {issue.reporterEmail !== user?.email ? (
+                    <button
+                      disabled={issue.status === "closed"}
+                      onClick={() => handleUpvote(issue._id)}
+                      className="btn btn-xs"
+                    >
+                      <FaThumbsUp /> {issue.upvotes?.length || 0}
+                    </button>
+                  ) : (
+                    <span className="text-gray-400 text-xs">Your issue</span>
+                  )}
                 </button>
 
                 <Link to={`/issues/${issue._id}`}>
