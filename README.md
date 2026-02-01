@@ -1,5 +1,7 @@
 # 🏙️ cityResolve: The Public Infrastructure Issue Reporting System
 
+# Live Link: https://city-resolve-client.web.app
+
 ## 📌 Project Overview
 
 The cityResolve is a web-based platform that allows citizens to report public infrastructure problems such as broken streetlights, potholes, water leakage, garbage overflow, damaged footpaths, etc. The system ensures efficient communication between citizens, government staff, and administrators to track, manage, and resolve issues transparently.
