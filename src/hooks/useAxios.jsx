@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 
 const axiosSecure = axios.create({
   baseURL:
-    "https://city-resolve-server.vercel.app/api",
+    "https://city-resolve-server.vercel.app",
 });
 const useAxios = () => {
   const { user, logOut } = useAuth();
