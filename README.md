@@ -8,6 +8,12 @@ The cityResolve is a web-based platform that allows citizens to report public in
 
 This project aims to reduce delays, improve accountability, and provide a centralized digital solution for managing public infrastructure complaints.
 
+## 🖼️ Project Screenshot
+
+![cityResolve Screenshot](city-resolve-home.png)
+![cityResolve Screenshot](city-resolve-client_all_issue.png)
+![cityResolve Screenshot](city-resolve-client_dashboard.png)
+
 ## 🎯 Key Objectives
 
 - Provide a centralized platform for reporting public issues
